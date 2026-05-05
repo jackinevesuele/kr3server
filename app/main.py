@@ -101,6 +101,31 @@ if MODE == "DEV":
         return JSONResponse(app.openapi())
 
 
+else:  # MODE == "PROD"
+    @app.get("/docs", include_in_schema=False)
+    async def disabled_docs():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Not Found",
+        )
+
+
+    @app.get("/openapi.json", include_in_schema=False)
+    async def disabled_openapi_json():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Not Found",
+        )
+
+
+    @app.get("/redoc", include_in_schema=False)
+    async def disabled_redoc():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Not Found",
+        )
+
+
 def auth_user(credentials: Annotated[HTTPBasicCredentials, Depends(basic_security)]) -> UserInDB:
     user = find_user_by_username(credentials.username, fake_users_db)
     if user is None:

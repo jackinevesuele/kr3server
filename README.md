@@ -90,10 +90,21 @@ curl -X DELETE http://localhost:8000/todos/1
 
 ## Документация
 
-В режиме `DEV` документация доступна по адресу:
+DEV-режим:
 
-```text
-http://localhost:8000/docs
+```bash
+MODE=DEV DOCS_USER=admin DOCS_PASSWORD=admin uvicorn app.main:app --reload
+curl -i -u admin:admin http://localhost:8000/docs
+curl -i -u admin:admin http://localhost:8000/openapi.json
 ```
 
-В режиме `PROD` документация отключена.
+PROD-режим:
+
+```bash
+MODE=PROD uvicorn app.main:app --reload
+curl -i http://localhost:8000/docs
+curl -i http://localhost:8000/openapi.json
+curl -i http://localhost:8000/redoc
+```
+
+В режиме `PROD` эти три адреса должны вернуть `404 Not Found`.
